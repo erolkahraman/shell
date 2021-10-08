@@ -2,6 +2,8 @@
 
 # Sync haproxy.cfg file changes to other haproxy nodes.
 # Erol Kahraman
+# 20211001 v1
+# 20211008 v2
 
 RS=/usr/bin/rsync
 FL=/etc/haproxy/haproxy.cfg
@@ -11,10 +13,9 @@ SYSCTL=/usr/bin/systemctl
 
 for ha_server in ${SRVS[@]}
 do
-  is_change=$(${RS} -a --out-format='%n' $FL root@${ha_server}:/etc/haproxy/haproxy.cfg)
-  $RS -az --progress $FL root@$ha_server:/etc/haproxy/haproxy.cfg
-
+  is_change=$(${RS} -a --out-format='%n' --dry-run $FL root@${ha_server}:/etc/haproxy/haproxy.cfg)
   if [ ${is_change} ]; then
+    $RS -az --progress $FL root@$ha_server:/etc/haproxy/haproxy.cfg
     logger "${is_change} file is updated."
     logger "HAPROXY on ${ha_server} is restarting..."
     $SSH root@$ha_server "systemctl restart haproxy.service"
