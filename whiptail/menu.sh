@@ -1,7 +1,7 @@
 while [ 1 ]
 do
 CHOICE=$(
-whiptail --title "Operative Systems" --menu "Make your choice" 16 100 9 \
+whiptail --title "Operative Systems" --menu "Make your choice" 20 100 9 \
 	"1)" "The name of this script."   \
 	"2)" "Time since last boot."  \
 	"3)" "Number of processes and threads." \
@@ -47,6 +47,6 @@ case $CHOICE in
 	"9)") exit
         ;;
 esac
-whiptail --msgbox "$result" 20 78
+whiptail --msgbox "$result" 20 100
 done
 exit
