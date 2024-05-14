@@ -1,52 +1,30 @@
-while [ 1 ]
+#!/bin/bash
+while [ True ]
 do
-CHOICE=$(
-whiptail --title "Operative Systems" --menu "Make your choice" 20 100 9 \
-	"1)" "The name of this script."   \
-	"2)" "Time since last boot."  \
-	"3)" "Number of processes and threads." \
-	"4)" "Number of context switches in the last secound." \
-	"5)" "How much time used in kernel mode and in user mode in the last secound." \
-	"6)" "Number of interupts in the last secound." \
-	"9)" "End script"  3>&2 2>&1 1>&3	
-)
+secim=$(whiptail --title "HeliTR Sunucuları" \
+                 --menu "Sunucu Kümesini Seçin" 12 40 4 \
+                 "1." "Yönetim Sunucuları" \
+                 "2." "Radius Sunucuları" \
+                 "3." "İletişim Sunucuları" \
+                 "4." "Veri Tabanı Sunucuları" \
+                 3>&1 1>&2 2>&3)
 
+    if [ $? -gt 0 ]; then # user pressed <Cancel> button
+        break
+    fi
 
-result=$(whoami)
-case $CHOICE in
-	"1)")   
-		# result="I am $result, the name of the script is start"
-		result=$(/usr/bin/python3 /home/destek/Documents/python/Docker/docker_temel_islemler.py)
-	;;
-	"2)")   
-	        OP=$(uptime | awk '{print $3;}')
-		result="This system has been up $OP minutes"
-	;;
-
-	"3)")   
-	        p=$(ps ax | wc -l)
-                t=$(ps amx | wc -l)
-		result="Number of processes $p\nNumber os threads $t"
+case $secim in
+        "1.")
+                echo bir
         ;;
-
-	"4)")   
-	        contextSwitch
-		read -r result < result
+        "2.")
+                echo iki 
         ;;
-
-	"5)")   
-                userKernelMode
-		read -r result < result
+        "3.")
+                echo uc 
         ;;
-
-	"6)")   
-		interupts
-		read -r result < result
-        ;;
-
-	"9)") exit
+        "4.")
+                echo dort 
         ;;
 esac
-whiptail --msgbox "$result" 20 100
 done
-exit
